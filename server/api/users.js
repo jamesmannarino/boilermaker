@@ -33,15 +33,20 @@ router.post('/signup', async (req, res, next) => {
   }
 });
 
-router.get('/logout', (req, res, next) => {
+router.post('/logout', (req, res, next) => {
   try {
-    console.log(req.body)
+    console.log(req.session)
     req.logout();
     //where is 204??
-    res.status(204).redirect('/')
+    req.session.destroy()
+    res.redirect('/')
   } catch (err) {
     next(err)
   }
+})
+
+router.get('/me', (req, res) => {
+  res.json(req.user)
 })
 
 module.exports = router

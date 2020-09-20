@@ -10,10 +10,9 @@ export const loggedInUser = user => {
   }
 };
 
-export const loggedOutUser = user => {
+export const loggedOutUser = () => {
   return {
-    type: LOGGED_OUT_USER,
-    user
+    type: LOGGED_OUT_USER
   }
 };
 
@@ -27,33 +26,32 @@ export const logInUser = (user) => {
       console.error(err)
     }
   }
-}
+};
 
-export const logOutUser = (user) => {
-  console.log(user)
+export const logOutUser = () => {
   return async(dispatch) => {
     try{
-      await axios.get('/api/users/logout')
-      dispatch(loggedOutUser(user))
+      await axios.post('/api/users/logout')
+      dispatch(loggedOutUser())
     } catch (err) {
       console.error(err)
     }
   }
-}
+};
 
 const initialState = {
   isLoggedIn: false,
   email: '',
-  password: ''
-}
+  password: '',
+};
 
 export default function userReducer(state = initialState, action) {
   switch(action.type) {
     case LOGGED_IN_USER:
-      console.log('action from reducer: ', action)
+      console.log('login action from reducer: ', action)
       return {...state, email: action.user.email, password: action.user.password, isLoggedIn: true}
     case LOGGED_OUT_USER:
-      console.log('action from reducer: ', action)
+      console.log('logout action from reducer: ', action)
       return {...state, isLoggedIn: false}
     default:
       return state

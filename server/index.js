@@ -8,6 +8,7 @@ const passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 const db = require('./db/database.js')
+const { User } = require('./db')
 require('./secrets')
 
 const dbStore = new SequelizeStore({ db: db })
@@ -15,6 +16,12 @@ dbStore.sync();
 
 const app = express();
 app.use(morgan('dev'))
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'not secure secret',
+  store: dbStore,
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -23,13 +30,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', require('./api'));
-
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'not secure secret',
-  store: dbStore,
-  resave: false,
-  saveUninitialized: false
-}));
 
 passport.serializeUser((user, done) => {
   try {
@@ -40,7 +40,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id)
+  User.findByPk(id)
     .then(user => done(null, user))
     .catch(done);
 });
