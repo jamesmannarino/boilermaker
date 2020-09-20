@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
-    "start-dev": "webpack -w & nodemon server"
+    "start-dev": "webpack -w & nodemon server",
+    "seed": "node seed.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,9 +22,17 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.11.5",
+    "axios": "^0.20.0",
+    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.19.0",
+    "chalk": "^4.1.0",
+    "connect-session-sequelize": "^7.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "lodash": "^4.17.20",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth": "^2.0.0",
     "pg": "^8.3.3",
     "pg-hstore": "^2.3.3",
     "react": "^16.13.1",
